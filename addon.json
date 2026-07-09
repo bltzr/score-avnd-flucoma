@@ -1,0 +1,11 @@
+{
+  "src": "<url to the .zip file created by the release script>",
+  "name": "Flucoma",
+  "raw_name": "score-avnd-flucoma",
+  "version": "0.1",
+  "kind": "addon",
+  "short": "FluCoMa integration for ossia score",
+  "long": "FluCoMa (Fluid Corpus Manipulation) tools integrated as avendish-based plugins for ossia score.",
+  "small": "",
+  "key": "04545931-4450-4466-AA77-56F174F79F01"
+}
