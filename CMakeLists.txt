@@ -443,6 +443,86 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/NormalizeFit.hpp
+  TARGET fluid_normalizefit
+  MAIN_CLASS NormalizeFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/NormalizePoint.hpp
+  TARGET fluid_normalizepoint
+  MAIN_CLASS NormalizePoint
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/StandardizeFit.hpp
+  TARGET fluid_standardizefit
+  MAIN_CLASS StandardizeFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/StandardizePoint.hpp
+  TARGET fluid_standardizepoint
+  MAIN_CLASS StandardizePoint
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/RobustScaleFit.hpp
+  TARGET fluid_robustscalefit
+  MAIN_CLASS RobustScaleFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/RobustScalePoint.hpp
+  TARGET fluid_robustscalepoint
+  MAIN_CLASS RobustScalePoint
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/PCAFit.hpp
+  TARGET fluid_pcafit
+  MAIN_CLASS PCAFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/PCAPoint.hpp
+  TARGET fluid_pcapoint
+  MAIN_CLASS PCAPoint
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/KMeansFit.hpp
+  TARGET fluid_kmeansfit
+  MAIN_CLASS KMeansFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/KMeansPredict.hpp
+  TARGET fluid_kmeanspredict
+  MAIN_CLASS KMeansPredict
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1

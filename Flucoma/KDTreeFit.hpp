@@ -13,6 +13,7 @@
 #include <flucoma/data/FluidJSON.hpp>
 
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <QFile>
@@ -35,7 +36,7 @@ struct KDTreeFit
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Dataset file", "corpus.json"> dataset;
     halp::lineedit<"Tree file", "kdtree.json"> tree;
     halp::toggle<"Fit"> fit;

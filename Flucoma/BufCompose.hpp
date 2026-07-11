@@ -5,6 +5,7 @@
 #include <flucoma/clients/nrt/BufComposeClient.hpp>
 
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <functional>
@@ -40,7 +41,7 @@ struct BufCompose
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Source", "source.wav"> source;
     halp::lineedit<"Destination", "dest.wav"> destination;
 

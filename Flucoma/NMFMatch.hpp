@@ -6,6 +6,7 @@
 
 #include <halp/audio.hpp>
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <vector>
@@ -36,7 +37,7 @@ struct NMFMatch
   {
     halp::fixed_audio_bus<"In", double, 1> audio;
 
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Bases", "nmf_bases.wav"> bases;
 
     FluCoMa::fluid_long_max_param<Client, Idx::kMaxRank, max_components,

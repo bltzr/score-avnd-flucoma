@@ -5,6 +5,7 @@
 #include <flucoma/clients/nrt/BufStatsClient.hpp>
 
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <functional>
@@ -37,7 +38,7 @@ struct BufStats
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Source", "source.wav"> source;
     halp::lineedit<"Stats file", "stats.wav"> statsFile;
     halp::lineedit<"Weights", ""> weights; // optional weights buffer

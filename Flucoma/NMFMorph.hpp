@@ -6,6 +6,7 @@
 
 #include <halp/audio.hpp>
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 namespace Flucoma
@@ -31,7 +32,7 @@ struct NMFMorph
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Source bases", "nmf_bases_a.wav"> sourceBases;
     halp::lineedit<"Target bases", "nmf_bases_b.wav"> targetBases;
     halp::lineedit<"Activations", "nmf_activations.wav"> activations;

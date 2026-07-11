@@ -5,6 +5,7 @@
 #include <flucoma/clients/rt/SpectralShapeClient.hpp>
 
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <functional>
@@ -37,7 +38,7 @@ struct BufSpectralShape
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Source", "source.wav"> source;
     halp::lineedit<"Features file", "spectralshape.wav"> featuresFile;
 

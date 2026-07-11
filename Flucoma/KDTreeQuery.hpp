@@ -16,6 +16,7 @@
 #include <flucoma/data/FluidJSON.hpp>
 
 #include <halp/controls.hpp>
+#include <halp/file_port.hpp>
 #include <halp/meta.hpp>
 
 #include <QFile>
@@ -43,7 +44,7 @@ struct KDTreeQuery
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
+    halp::folder_port<"Folder"> folder;
     halp::lineedit<"Tree file", "kdtree.json"> tree;
     halp::lineedit<"Meta file", "corpus.json.meta.json"> meta;
     struct : halp::spinbox_i32<"K", halp::range{1, 64, 1}>
