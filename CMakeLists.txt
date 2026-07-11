@@ -587,6 +587,22 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/MLPClassifierFit.hpp
+  TARGET fluid_mlpclassifierfit
+  MAIN_CLASS MLPClassifierFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/MLPClassifierPoint.hpp
+  TARGET fluid_mlpclassifierpoint
+  MAIN_CLASS MLPClassifierPoint
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1
