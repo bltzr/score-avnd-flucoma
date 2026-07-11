@@ -1,0 +1,32 @@
+diff --git a/include/flucoma/algorithms/public/HPSS.hpp b/include/flucoma/algorithms/public/HPSS.hpp
+index 07e379a9..3b414e02 100644
+--- a/include/flucoma/algorithms/public/HPSS.hpp
++++ b/include/flucoma/algorithms/public/HPSS.hpp
+@@ -106,8 +106,8 @@ public:
+     ArrayXMap harmonicMask(mHarmMaskBuf.data(),nBins);
+     ArrayXMap percussiveMask(mPercMaskBuf.data(),nBins);
+     ArrayXMap residualMask(mResMaskBuf.data(),nBins);
+-    residualMask =
+-        mode == kAdvanced ? ArrayXd::Ones(nBins) : ArrayXd::Zero(nBins);
++    residualMask = mode == kAdvanced ? ArrayXd(ArrayXd::Ones(nBins))
++                                     : ArrayXd(ArrayXd::Zero(nBins));
+     switch (mode)
+     {
+     case kClassic: {
+diff --git a/include/flucoma/algorithms/util/EigenRandom.hpp b/include/flucoma/algorithms/util/EigenRandom.hpp
+index 90902d85..5e9648bc 100644
+--- a/include/flucoma/algorithms/util/EigenRandom.hpp
++++ b/include/flucoma/algorithms/util/EigenRandom.hpp
+@@ -60,10 +60,10 @@ Range<T> DefaultRange =
+     Range<T>{std::numeric_limits<T>::min(), std::numeric_limits<T>::max()};
+ 
+ template <>
+-auto DefaultRange<double> = Range<double>{-1.0, 1.0};
++inline auto DefaultRange<double> = Range<double>{-1.0, 1.0};
+ 
+ template <>
+-auto DefaultRange<float> = Range<double>{-1.0f, 1.0f};
++inline auto DefaultRange<float> = Range<double>{-1.0f, 1.0f};
+ 
+ 
+ // Wraps up C++ random stuff to suit our needs

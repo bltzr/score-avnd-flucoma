@@ -1,0 +1,3 @@
+[submodule "3rdparty/flucoma-core"]
+	path = 3rdparty/flucoma-core
+	url = https://github.com/flucoma/flucoma-core.git
