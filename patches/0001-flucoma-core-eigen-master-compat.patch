@@ -64,6 +64,46 @@ index 171a1c1b..4094694a 100644
      candidateProbs = dist.rowwise().minCoeff() / q(candidateIdx);
  
      auto start = candidateProbs.begin();
+diff --git a/include/flucoma/algorithms/public/SGD.hpp b/include/flucoma/algorithms/public/SGD.hpp
+index b1c5c4f9..d7489dd3 100644
+--- a/include/flucoma/algorithms/public/SGD.hpp
++++ b/include/flucoma/algorithms/public/SGD.hpp
+@@ -58,9 +58,9 @@ public:
+     if (valIdx)
+     {
+       valInput =
+-          ArrayXXd(asEigen<Eigen::Array>(in)(valIdx->col(0), Eigen::all));
++          ArrayXXd(asEigen<Eigen::Array>(in)(valIdx->col(0), Eigen::placeholders::all));
+       valOutput =
+-          ArrayXXd(asEigen<Eigen::Array>(out)(valIdx->col(1), Eigen::all));
++          ArrayXXd(asEigen<Eigen::Array>(out)(valIdx->col(1), Eigen::placeholders::all));
+     }
+ 
+     double error = 0;
+@@ -71,9 +71,9 @@ public:
+       for (auto batch : loader)
+       {
+         index    thisBatchSize = batch->rows();
+-        ArrayXXd batchIn = asEigen<Eigen::Array>(in)(batch->col(0), Eigen::all);
++        ArrayXXd batchIn = asEigen<Eigen::Array>(in)(batch->col(0), Eigen::placeholders::all);
+         ArrayXXd batchOut =
+-            asEigen<Eigen::Array>(out)(batch->col(1), Eigen::all);
++            asEigen<Eigen::Array>(out)(batch->col(1), Eigen::placeholders::all);
+         ArrayXXd batchPred = ArrayXXd::Zero(thisBatchSize, outputSize);
+         model.forward(batchIn, batchPred);
+         ArrayXXd diff = batchPred - batchOut;
+@@ -96,9 +96,9 @@ public:
+ 
+     auto trainingIdx = loader.trainingSet();
+     nExamples = trainingIdx->rows();
+-    ArrayXXd input = asEigen<Eigen::Array>(in)(trainingIdx->col(0), Eigen::all);
++    ArrayXXd input = asEigen<Eigen::Array>(in)(trainingIdx->col(0), Eigen::placeholders::all);
+     ArrayXXd output =
+-        asEigen<Eigen::Array>(out)(trainingIdx->col(1), Eigen::all);
++        asEigen<Eigen::Array>(out)(trainingIdx->col(1), Eigen::placeholders::all);
+ 
+     ArrayXXd finalPred = ArrayXXd::Zero(nExamples, outputSize);
+     model.forward(input, finalPred);
 diff --git a/include/flucoma/algorithms/util/DistanceFuncs.hpp b/include/flucoma/algorithms/util/DistanceFuncs.hpp
 index 0f9577fb..5789d113 100644
 --- a/include/flucoma/algorithms/util/DistanceFuncs.hpp

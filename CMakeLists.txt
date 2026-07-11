@@ -539,6 +539,54 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/SKMeansFit.hpp
+  TARGET fluid_skmeansfit
+  MAIN_CLASS SKMeansFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/SKMeansPredict.hpp
+  TARGET fluid_skmeanspredict
+  MAIN_CLASS SKMeansPredict
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/MDSFit.hpp
+  TARGET fluid_mdsfit
+  MAIN_CLASS MDSFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/GridFit.hpp
+  TARGET fluid_gridfit
+  MAIN_CLASS GridFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/MLPRegressorFit.hpp
+  TARGET fluid_mlpregressorfit
+  MAIN_CLASS MLPRegressorFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/MLPRegressorPoint.hpp
+  TARGET fluid_mlpregressorpoint
+  MAIN_CLASS MLPRegressorPoint
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1
