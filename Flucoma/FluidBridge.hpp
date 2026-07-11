@@ -210,6 +210,35 @@ struct fluid_enum_param
   operator const int&() const noexcept { return value; }
 };
 
+// One option of a ChoicesT multi-select parameter (e.g. BufStats' "select"),
+// exposed as an individual toggle named after the option. Declare one port
+// per option; each directly drives its bit in the parameter's bitset.
+template <typename Client, std::size_t N, std::size_t Opt, bool Init = true>
+struct fluid_choice_toggle
+{
+  static constexpr auto& desc = descriptors<Client>().template get<N>();
+  static constexpr std::size_t fluid_choice_index = N;
+  static constexpr std::size_t choice_opt = Opt;
+
+  static consteval auto name() { return std::string_view{desc.strings[Opt]}; }
+
+  enum widget
+  {
+    toggle
+  };
+
+  struct range
+  {
+    const bool min = false;
+    const bool max = true;
+    const bool init = Init;
+  };
+
+  bool value = Init;
+  operator bool&() noexcept { return value; }
+  operator const bool&() const noexcept { return value; }
+};
+
 // FFT settings (FFTParamsT): exposed as three integer ports.
 // role: 0 = window size, 1 = hop size (-1: window/2), 2 = fft size (-1: window)
 // FFTParams' accessors are not constexpr, so the defaults are template
@@ -409,6 +438,12 @@ void sync_params_into(ParamSetType& params, Ins& ins)
         fft.setHop(field.value);
       else
         fft.setFFT(field.value);
+    }
+    else if constexpr(requires { Field::fluid_choice_index; })
+    {
+      // ChoicesT option toggle: flip our bit in the parameter's bitset.
+      constexpr std::size_t N = Field::fluid_choice_index;
+      params.template get<N>().set(Field::choice_opt, (bool)field.value);
     }
     else if constexpr(requires { Field::fluid_index; } && requires { field.value; })
     {

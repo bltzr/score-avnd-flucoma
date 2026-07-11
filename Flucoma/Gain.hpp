@@ -30,9 +30,14 @@ struct Gain
     halp::fixed_audio_bus<"In", double, 1> audio;
     halp::fixed_audio_bus<"Gain", double, 1> gain;
 
-    // Note: the client only reads this control when the second input has no
-    // data; with a fixed bus the audio-rate gain input always takes over.
+    // Only read by the client when no audio-rate gain is supplied (below)
     FluCoMa::fluid_param_for<Client, Idx::kGain> gainAmount;
+
+    // Explicit switch between the control value and the audio-rate "Gain"
+    // input (a fixed bus always carries data, so the client can't tell an
+    // unconnected input from silence on its own). Appended last: earlier
+    // scenarios keep their port ids.
+    halp::toggle<"Use audio-rate gain"> useAudioGain;
   } inputs;
 
   struct outs
@@ -48,7 +53,10 @@ struct Gain
   {
     host.sync_params(inputs);
 
-    double* in_chans[2]{inputs.audio.samples[0], inputs.gain.samples[0]};
+    // A null second channel makes the client fall back to the gain control
+    double* in_chans[2]{
+        inputs.audio.samples[0],
+        inputs.useAudioGain ? inputs.gain.samples[0] : nullptr};
     host.process(in_chans, 2, outputs.audio.samples, 1, frames);
   }
 };

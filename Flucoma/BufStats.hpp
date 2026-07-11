@@ -45,7 +45,15 @@ struct BufStats
 
     halp::toggle<"Process"> process;
 
-    // kSelect (ChoicesT) not exposed yet: default computes all statistics.
+    // Which statistics to compute (columns of the stats buffer, in order)
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 0> sel_mean;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 1> sel_std;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 2> sel_skew;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 3> sel_kurtosis;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 4> sel_low;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 5> sel_mid;
+    FluCoMa::fluid_choice_toggle<Client, Idx::kSelect, 6> sel_high;
+
     FluCoMa::fluid_param_for<Client, Idx::kNumDerivatives> numDerivs;
     FluCoMa::fluid_param_for<Client, Idx::kLow> low;
     FluCoMa::fluid_param_for<Client, Idx::kMiddle> middle;
