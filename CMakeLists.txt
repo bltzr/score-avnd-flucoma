@@ -523,6 +523,22 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/UMAPFit.hpp
+  TARGET fluid_umapfit
+  MAIN_CLASS UMAPFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/UMAPPoint.hpp
+  TARGET fluid_umappoint
+  MAIN_CLASS UMAPPoint
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1
