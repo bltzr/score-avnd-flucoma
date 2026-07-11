@@ -13,6 +13,70 @@ index 07e379a9..3b414e02 100644
      switch (mode)
      {
      case kClassic: {
+diff --git a/include/flucoma/algorithms/public/KMeans.hpp b/include/flucoma/algorithms/public/KMeans.hpp
+index 171a1c1b..4094694a 100644
+--- a/include/flucoma/algorithms/public/KMeans.hpp
++++ b/include/flucoma/algorithms/public/KMeans.hpp
+@@ -33,7 +33,7 @@ namespace _impl::kmeans_init {
+ /// @param input input data
+ /// @param k number of clusters
+ /// @return a 2D Eigen array of means
+-auto randomPartition(const Eigen::MatrixXd& input, index k, index seed)
++inline auto randomPartition(const Eigen::MatrixXd& input, index k, index seed)
+ {
+   // Means come from randomly assigning points and taking average
+   std::random_device              rd;
+@@ -44,7 +44,7 @@ auto randomPartition(const Eigen::MatrixXd& input, index k, index seed)
+   std::for_each_n(input.rowwise().begin(), input.rows(),
+                   [&gen, &distrib, &means, &weights](auto row) {
+                     index label = distrib(gen);
+-                    means(label, Eigen::all) += row.array();
++                    means(label, Eigen::placeholders::all) += row.array();
+                     weights(label)++;
+                   });
+   weights = (weights != 0).select(weights,1); 
+@@ -56,7 +56,7 @@ auto randomPartition(const Eigen::MatrixXd& input, index k, index seed)
+ /// @param input input data
+ /// @param k number of clusters
+ /// @return 2D Eigen expression of sampled input points
+-auto randomPoints(const Eigen::MatrixXd& input, index k, index seed)
++inline auto randomPoints(const Eigen::MatrixXd& input, index k, index seed)
+ {
+   // Means come from k random points 
+   std::random_device              rd;
+@@ -66,7 +66,7 @@ auto randomPoints(const Eigen::MatrixXd& input, index k, index seed)
+   std::vector<index> rows(asUnsigned(k));
+   std::generate(begin(rows), end(rows),
+                 [&distrib, &gen]() { return distrib(gen); });
+-  return input(rows, Eigen::all);
++  return input(rows, Eigen::placeholders::all);
+ }
+ 
+ auto squareEuclidiean = [](Eigen::Ref<const Eigen::MatrixXd> const& a,
+@@ -120,8 +120,8 @@ auto akmc2(Eigen::MatrixXd const& input, index k, DistanceFn&& distance,
+     Eigen::VectorXd proposalProbabilities = q(candidateIdx);
+ 
+     // changes size every iteration
+-    Eigen::ArrayXXd dist = distance(input(candidateIdx, Eigen::all),
+-                                    centres(Eigen::seq(0, i++), Eigen::all));
++    Eigen::ArrayXXd dist = distance(input(candidateIdx, Eigen::placeholders::all),
++                                    centres(Eigen::seq(0, i++), Eigen::placeholders::all));
+     candidateProbs = dist.rowwise().minCoeff() / q(candidateIdx);
+ 
+     auto start = candidateProbs.begin();
+diff --git a/include/flucoma/algorithms/util/DistanceFuncs.hpp b/include/flucoma/algorithms/util/DistanceFuncs.hpp
+index 0f9577fb..5789d113 100644
+--- a/include/flucoma/algorithms/util/DistanceFuncs.hpp
++++ b/include/flucoma/algorithms/util/DistanceFuncs.hpp
+@@ -87,7 +87,7 @@ public:
+   }
+ };
+ 
+-Eigen::MatrixXd DistanceMatrix(Eigen::Ref<Eigen::MatrixXd> X, index distance)
++inline Eigen::MatrixXd DistanceMatrix(Eigen::Ref<Eigen::MatrixXd> X, index distance)
+ {
+   auto            dist = static_cast<DistanceFuncs::Distance>(distance);
+   Eigen::MatrixXd D = Eigen::MatrixXd::Zero(X.rows(), X.rows());
 diff --git a/include/flucoma/algorithms/util/EigenRandom.hpp b/include/flucoma/algorithms/util/EigenRandom.hpp
 index 90902d85..5e9648bc 100644
 --- a/include/flucoma/algorithms/util/EigenRandom.hpp
@@ -30,3 +94,375 @@ index 90902d85..5e9648bc 100644
  
  
  // Wraps up C++ random stuff to suit our needs
+diff --git a/include/flucoma/algorithms/util/ScalerUtils.hpp b/include/flucoma/algorithms/util/ScalerUtils.hpp
+index 36956872..2e25ed12 100644
+--- a/include/flucoma/algorithms/util/ScalerUtils.hpp
++++ b/include/flucoma/algorithms/util/ScalerUtils.hpp
+@@ -17,12 +17,12 @@ under the European Union’s Horizon 2020 research and innovation programme
+ // To sanitize, we set an arbitrary threshold of 10*epsilon and replace by 1 if smaller
+ // This is in line with scikit learn behaviour (https://github.com/scikit-learn/scikit-learn/blob/16625450b58f555dc3955d223f0c3b64a5686984/sklearn/preprocessing/_data.py#L88-L118)
+ 
+-void handleZerosInScale(Eigen::ArrayXd& rangeArray)
++inline void handleZerosInScale(Eigen::ArrayXd& rangeArray)
+ {
+   rangeArray = (rangeArray < 10 * fluid::algorithm::epsilon).select(1,rangeArray);
+ }
+ 
+-void handleZerosInScale(double& range)
++inline void handleZerosInScale(double& range)
+ {
+   range = (range < (10 * fluid::algorithm::epsilon)) ? 1 : range;
+ }
+diff --git a/include/flucoma/data/FluidJSON.hpp b/include/flucoma/data/FluidJSON.hpp
+index d2a3df7b..83cf9cfd 100644
+--- a/include/flucoma/data/FluidJSON.hpp
++++ b/include/flucoma/data/FluidJSON.hpp
+@@ -27,7 +27,7 @@ enum class JSONTypes {
+   BOOLEAN
+ };
+ 
+-bool check_json(const nlohmann::json &j,
++inline bool check_json(const nlohmann::json &j,
+   std::vector<std::string> keys, std::vector<JSONTypes> types) {
+     if(keys.size()!=types.size()) return false;
+     for (index i = 0; i < asSigned(keys.size()); i++) {
+@@ -52,7 +52,7 @@ bool check_json(const nlohmann::json &j,
+ namespace impl {
+ 
+ template <typename T, typename Validator>
+-void from_json(const nlohmann::json &j, FluidTensor<T, 1>& t, Validator&& validate)
++inline void from_json(const nlohmann::json &j, FluidTensor<T, 1>& t, Validator&& validate)
+ {
+   using namespace nlohmann;
+   if((t.size() > 1 && !j.is_array()) || (j.size() < asUnsigned(t.size()))) return;
+@@ -63,26 +63,26 @@ void from_json(const nlohmann::json &j, FluidTensor<T, 1>& t, Validator&& valida
+ } //impl
+ 
+ template <typename T>
+-void from_json(const nlohmann::json &j, FluidTensor<T, 1> &t) {
++inline void from_json(const nlohmann::json &j, FluidTensor<T, 1> &t) {
+   impl::from_json(j, t, [](const auto& x){ return x.is_number(); });
+ }
+ 
+-void from_json(const nlohmann::json &j, FluidTensor<std::string, 1> &t) {
++inline void from_json(const nlohmann::json &j, FluidTensor<std::string, 1> &t) {
+   impl::from_json(j, t, [](const auto& x){ return x.is_string(); });
+ }
+ 
+ template <typename T>
+-void to_json(nlohmann::json &j, const FluidTensorView<T, 1> &t) {
++inline void to_json(nlohmann::json &j, const FluidTensorView<T, 1> &t) {
+   j = std::vector<T>(t.begin(), t.end());
+ }
+ 
+ template <typename T>
+-void to_json(nlohmann::json &j, const FluidTensorView<const T, 1> &t) {
++inline void to_json(nlohmann::json &j, const FluidTensorView<const T, 1> &t) {
+   j = std::vector<T>(t.begin(), t.end());
+ }
+ 
+ template <typename T>
+-void from_json(const nlohmann::json &j, FluidTensor<T, 2> &t) {
++inline void from_json(const nlohmann::json &j, FluidTensor<T, 2> &t) {
+   if (j.size() > 0) {
+     auto result = FluidTensor<T, 2>(asSigned(j.size()), asSigned(j[0].size()));
+     FluidTensor<T, 1> tmp(asSigned(j[0].size()));
+@@ -95,7 +95,7 @@ void from_json(const nlohmann::json &j, FluidTensor<T, 2> &t) {
+ }
+ 
+ template <typename T>
+-void to_json(nlohmann::json &j, const FluidTensorView<T, 2> &t) {
++inline void to_json(nlohmann::json &j, const FluidTensorView<T, 2> &t) {
+   for (index i = 0; i < t.rows(); i++) {
+     j.push_back(t.row(i));
+   }
+@@ -103,7 +103,7 @@ void to_json(nlohmann::json &j, const FluidTensorView<T, 2> &t) {
+ 
+ // FluidDataSet
+ template <typename T>
+-void to_json(nlohmann::json &j, const FluidDataSet<std::string, T, 1> &ds) {
++inline void to_json(nlohmann::json &j, const FluidDataSet<std::string, T, 1> &ds) {
+   auto ids = ds.getIds();
+   auto data = ds.getData();
+   j["cols"] = ds.pointSize();
+@@ -113,7 +113,7 @@ void to_json(nlohmann::json &j, const FluidDataSet<std::string, T, 1> &ds) {
+ }
+ 
+ template <typename T>
+-bool check_json(const nlohmann::json &j,
++inline bool check_json(const nlohmann::json &j,
+                 const FluidDataSet<std::string, T, 1> &) {
+   return fluid::check_json(j,
+     {"data", "cols"},
+@@ -122,7 +122,7 @@ bool check_json(const nlohmann::json &j,
+ }
+ 
+ template <typename T>
+-void from_json(const nlohmann::json &j, FluidDataSet<std::string, T, 1> &ds) {
++inline void from_json(const nlohmann::json &j, FluidDataSet<std::string, T, 1> &ds) {
+   auto rows = j.at("data");
+   index pointSize = j.at("cols").get<index>();
+   ds.resize(pointSize);
+@@ -135,7 +135,7 @@ void from_json(const nlohmann::json &j, FluidDataSet<std::string, T, 1> &ds) {
+ 
+ namespace algorithm {
+ // KDTree
+-void to_json(nlohmann::json &j, const KDTree &tree) {
++inline void to_json(nlohmann::json &j, const KDTree &tree) {
+   KDTree::FlatData treeData = tree.toFlat();
+   j["tree"] = FluidTensorView<index, 2>(treeData.tree);
+   j["rows"] = treeData.data.rows();
+@@ -144,7 +144,7 @@ void to_json(nlohmann::json &j, const KDTree &tree) {
+   j["ids"] = FluidTensorView<std::string, 1>(treeData.ids);
+ }
+ 
+-bool check_json(const nlohmann::json &j, const KDTree &) {
++inline bool check_json(const nlohmann::json &j, const KDTree &) {
+   return fluid::check_json(j,
+     {"rows", "cols", "data", "tree", "ids"},
+     {JSONTypes::NUMBER, JSONTypes::NUMBER,
+@@ -153,7 +153,7 @@ bool check_json(const nlohmann::json &j, const KDTree &) {
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, KDTree &tree) {
++inline void from_json(const nlohmann::json &j, KDTree &tree) {
+   index rows = j.at("rows").get<index>();
+   index cols = j.at("cols").get<index>();
+   KDTree::FlatData treeData(rows, cols);
+@@ -164,7 +164,7 @@ void from_json(const nlohmann::json &j, KDTree &tree) {
+ }
+ 
+ // KMeans
+-void to_json(nlohmann::json &j, const KMeans &kmeans) {
++inline void to_json(nlohmann::json &j, const KMeans &kmeans) {
+   RealMatrix means(kmeans.getK(), kmeans.dims());
+   kmeans.getMeans(means);
+   j["means"] = RealMatrixView(means);
+@@ -172,14 +172,14 @@ void to_json(nlohmann::json &j, const KMeans &kmeans) {
+   j["cols"] = means.cols();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const KMeans &) {
++inline bool check_json(const nlohmann::json &j, const KMeans &) {
+   return fluid::check_json(j,
+     {"rows", "cols", "means"},
+     {JSONTypes::NUMBER, JSONTypes::NUMBER,JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, KMeans &kmeans) {
++inline void from_json(const nlohmann::json &j, KMeans &kmeans) {
+   index rows = j.at("rows").get<index>();
+   index cols = j.at("cols").get<index>();
+   RealMatrix means(rows, cols);
+@@ -188,7 +188,7 @@ void from_json(const nlohmann::json &j, KMeans &kmeans) {
+ }
+ 
+ // SKMeans
+-void to_json(nlohmann::json &j, const SKMeans &skmeans) {
++inline void to_json(nlohmann::json &j, const SKMeans &skmeans) {
+   RealMatrix means(skmeans.getK(), skmeans.dims());
+   skmeans.getMeans(means);
+   j["means"] = RealMatrixView(means);
+@@ -196,14 +196,14 @@ void to_json(nlohmann::json &j, const SKMeans &skmeans) {
+   j["cols"] = means.cols();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const SKMeans &) {
++inline bool check_json(const nlohmann::json &j, const SKMeans &) {
+   return fluid::check_json(j,
+     {"rows", "cols", "means"},
+     {JSONTypes::NUMBER, JSONTypes::NUMBER,JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, SKMeans &skmeans) {
++inline void from_json(const nlohmann::json &j, SKMeans &skmeans) {
+   index rows = j.at("rows").get<index>();
+   index cols = j.at("cols").get<index>();
+   RealMatrix means(rows, cols);
+@@ -213,7 +213,7 @@ void from_json(const nlohmann::json &j, SKMeans &skmeans) {
+ 
+ 
+ // Normalize
+-void to_json(nlohmann::json &j, const Normalization &normalization) {
++inline void to_json(nlohmann::json &j, const Normalization &normalization) {
+   RealVector dataMin(normalization.dims());
+   RealVector dataMax(normalization.dims());
+   normalization.getDataMin(dataMin);
+@@ -225,7 +225,7 @@ void to_json(nlohmann::json &j, const Normalization &normalization) {
+   j["cols"] = normalization.dims();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const Normalization &) {
++inline bool check_json(const nlohmann::json &j, const Normalization &) {
+   return fluid::check_json(j,
+     {"cols", "data_min", "data_max", "min", "max"},
+     {JSONTypes::NUMBER, JSONTypes::ARRAY, JSONTypes::ARRAY,
+@@ -234,7 +234,7 @@ bool check_json(const nlohmann::json &j, const Normalization &) {
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, Normalization &normalization) {
++inline void from_json(const nlohmann::json &j, Normalization &normalization) {
+   index cols = j.at("cols").get<index>();
+   RealVector dataMin(cols);
+   RealVector dataMax(cols);
+@@ -246,7 +246,7 @@ void from_json(const nlohmann::json &j, Normalization &normalization) {
+ }
+ 
+ // RobustScale
+-void to_json(nlohmann::json &j, const RobustScaling &robustScaling) {
++inline void to_json(nlohmann::json &j, const RobustScaling &robustScaling) {
+   RealVector median(robustScaling.dims());
+   RealVector range(robustScaling.dims());
+   RealVector dataLow(robustScaling.dims());
+@@ -264,7 +264,7 @@ void to_json(nlohmann::json &j, const RobustScaling &robustScaling) {
+   j["cols"] = robustScaling.dims();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const RobustScaling &) {
++inline bool check_json(const nlohmann::json &j, const RobustScaling &) {
+   return fluid::check_json(j,
+     {"cols", "median", "range", "data_low", "data_high","low", "high"},
+     {JSONTypes::NUMBER, JSONTypes::ARRAY, JSONTypes::ARRAY,
+@@ -274,7 +274,7 @@ bool check_json(const nlohmann::json &j, const RobustScaling &) {
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, RobustScaling &robustScaling) {
++inline void from_json(const nlohmann::json &j, RobustScaling &robustScaling) {
+   index cols = j.at("cols").get<index>();
+   RealVector median(cols);
+   RealVector range(cols);
+@@ -290,7 +290,7 @@ void from_json(const nlohmann::json &j, RobustScaling &robustScaling) {
+ }
+ 
+ // Standardize
+-void to_json(nlohmann::json &j, const Standardization &standardization) {
++inline void to_json(nlohmann::json &j, const Standardization &standardization) {
+   RealVector mean(standardization.dims());
+   RealVector std(standardization.dims());
+   standardization.getMean(mean);
+@@ -300,14 +300,14 @@ void to_json(nlohmann::json &j, const Standardization &standardization) {
+   j["cols"] = standardization.dims();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const Standardization &) {
++inline bool check_json(const nlohmann::json &j, const Standardization &) {
+   return fluid::check_json(j,
+     {"cols", "mean", "std"},
+     {JSONTypes::NUMBER, JSONTypes::ARRAY, JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, Standardization &standardization) {
++inline void from_json(const nlohmann::json &j, Standardization &standardization) {
+   index cols = j.at("cols").get<index>();
+   RealVector mean(cols);
+   RealVector std(cols);
+@@ -317,7 +317,7 @@ void from_json(const nlohmann::json &j, Standardization &standardization) {
+ }
+ 
+ // PCA
+-void to_json(nlohmann::json &j, const PCA &pca) {
++inline void to_json(nlohmann::json &j, const PCA &pca) {
+   index rows = pca.dims();
+   index cols = pca.size();
+   RealMatrix bases(rows, cols);
+@@ -335,14 +335,14 @@ void to_json(nlohmann::json &j, const PCA &pca) {
+   j["cols"] = cols;
+ }
+ 
+-bool check_json(const nlohmann::json &j, const PCA &) {
++inline bool check_json(const nlohmann::json &j, const PCA &) {
+   return fluid::check_json(j,
+     {"rows","cols", "bases", "values", "mean"},
+     {JSONTypes::NUMBER, JSONTypes::NUMBER, JSONTypes::ARRAY, JSONTypes::ARRAY, JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, PCA &pca) {
++inline void from_json(const nlohmann::json &j, PCA &pca) {
+ 
+   index rows = j.at("rows").get<index>();
+   index cols = j.at("cols").get<index>();
+@@ -362,21 +362,21 @@ void from_json(const nlohmann::json &j, PCA &pca) {
+ 
+ 
+ // LabelSetEncoder
+-void to_json(nlohmann::json& j, const LabelSetEncoder& lse) {
++inline void to_json(nlohmann::json& j, const LabelSetEncoder& lse) {
+   FluidTensor<std::string, 1> labels(lse.numLabels());
+   lse.getLabels(labels);
+   j["labels"] = FluidTensorView<std::string, 1>(labels);
+   j["rows"] = labels.size();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const LabelSetEncoder &) {
++inline bool check_json(const nlohmann::json &j, const LabelSetEncoder &) {
+   return fluid::check_json(j,
+     {"rows", "labels", "bases", "mean"},
+     {JSONTypes::NUMBER, JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, LabelSetEncoder &lse) {
++inline void from_json(const nlohmann::json &j, LabelSetEncoder &lse) {
+   index rows = j["rows"].get<index>();
+   FluidTensor<std::string, 1> labels(rows);
+   j.at("labels").get_to(labels);
+@@ -384,7 +384,7 @@ void from_json(const nlohmann::json &j, LabelSetEncoder &lse) {
+ }
+ 
+ // MLP
+-void to_json(nlohmann::json &j, const MLP &mlp) {
++inline void to_json(nlohmann::json &j, const MLP &mlp) {
+   using namespace std;
+   for (index i = 0; i < mlp.size(); i++){
+     nlohmann::json layer;
+@@ -404,14 +404,14 @@ void to_json(nlohmann::json &j, const MLP &mlp) {
+ }
+ 
+ //TODO
+-bool check_json(const nlohmann::json &j, const MLP &) {
++inline bool check_json(const nlohmann::json &j, const MLP &) {
+   return fluid::check_json(j,
+     {"layers"},
+     {JSONTypes::ARRAY}
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, MLP &mlp) {
++inline void from_json(const nlohmann::json &j, MLP &mlp) {
+   using namespace std;
+   index nLayers = asSigned(j["layers"].size());
+   if(nLayers <= 0) return;
+@@ -441,7 +441,7 @@ void from_json(const nlohmann::json &j, MLP &mlp) {
+ }
+ 
+ // UMAP
+-void to_json(nlohmann::json &j, const UMAP &umap) {
++inline void to_json(nlohmann::json &j, const UMAP &umap) {
+   RealMatrix embedding(umap.size(), umap.dims());
+   umap.getEmbedding(embedding);
+   j["embedding"] = RealMatrixView(embedding);
+@@ -453,7 +453,7 @@ void to_json(nlohmann::json &j, const UMAP &umap) {
+   j["k"] = umap.getK();
+ }
+ 
+-bool check_json(const nlohmann::json &j, const UMAP &) {
++inline bool check_json(const nlohmann::json &j, const UMAP &) {
+   return fluid::check_json(j,
+     {"rows", "cols", "embedding", "a", "b", "k"},
+     {JSONTypes::NUMBER, JSONTypes::NUMBER,JSONTypes::ARRAY,
+@@ -461,7 +461,7 @@ bool check_json(const nlohmann::json &j, const UMAP &) {
+   );
+ }
+ 
+-void from_json(const nlohmann::json &j, UMAP &umap) {
++inline void from_json(const nlohmann::json &j, UMAP &umap) {
+   index rows = j.at("rows").get<index>();
+   index cols = j.at("cols").get<index>();
+   RealMatrix embedding(rows, cols);

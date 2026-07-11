@@ -419,6 +419,30 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/CorpusBuilder.hpp
+  TARGET fluid_corpusbuilder
+  MAIN_CLASS CorpusBuilder
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/KDTreeFit.hpp
+  TARGET fluid_kdtreefit
+  MAIN_CLASS KDTreeFit
+  NAMESPACE Flucoma
+)
+
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/KDTreeQuery.hpp
+  TARGET fluid_kdtreequery
+  MAIN_CLASS KDTreeQuery
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1
