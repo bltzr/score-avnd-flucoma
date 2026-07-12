@@ -603,6 +603,14 @@ avnd_score_plugin_add(
   NAMESPACE Flucoma
 )
 
+avnd_score_plugin_add(
+  BASE_TARGET score_addon_flucoma
+  SOURCES Flucoma/DynComboTest.hpp
+  TARGET fluid_dyncombotest
+  MAIN_CLASS DynComboTest
+  NAMESPACE Flucoma
+)
+
 avnd_score_plugin_finalize(
   BASE_TARGET score_addon_flucoma
   PLUGIN_VERSION 1
