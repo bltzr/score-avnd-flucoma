@@ -1,8 +1,9 @@
 #pragma once
 
-/* Validation object for the dynamic-combobox prototype (avendish
- * halp::dynamic_combobox + score runtime alternatives). Lists the audio files
- * of a folder in a combobox that repopulates live as the folder changes.
+/* Validation object for the dynamic-combobox prototype: avendish
+ * halp::dynamic_combobox (celtera/avendish#171) + score runtime alternatives
+ * (ossia/score#2110). Lists the audio files of a folder in a combobox that
+ * repopulates live as the folder changes.
  * Remove once the feature is upstreamed and used by real objects.
  */
 
