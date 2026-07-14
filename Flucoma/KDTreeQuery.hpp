@@ -17,6 +17,7 @@
 
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/meta.hpp>
 
 #include <QFile>
@@ -45,8 +46,9 @@ struct KDTreeQuery
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Tree file", "kdtree.json"> tree;
-    halp::lineedit<"Meta file", "corpus.json.meta.json"> meta;
+    // Folder-backed pickers: list the folder's .json files, populated at load.
+    halp::folder_combobox<"Tree file", "Folder", "json"> tree;
+    halp::folder_combobox<"Meta file", "Folder", "json"> meta;
     struct : halp::spinbox_i32<"K", halp::range{1, 64, 1}>
     {
     } k;

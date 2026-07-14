@@ -7,6 +7,7 @@
  * Remove once the feature is upstreamed and used by real objects.
  */
 
+#include <halp/audio.hpp>
 #include <halp/controls.hpp>
 #include <halp/dynamic_combobox.hpp>
 #include <halp/file_port.hpp>

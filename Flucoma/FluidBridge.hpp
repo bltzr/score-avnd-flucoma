@@ -15,6 +15,12 @@
 
 #include <boost/pfr.hpp>
 
+// Flucoma objects declare halp control ports (val_port, sliders, …) and take
+// halp::setup in prepare(); include these headers explicitly rather than relying
+// on transitive includes, which newer avendish no longer provides.
+#include <halp/audio.hpp>
+#include <halp/controls.hpp>
+
 #include <flucoma/clients/common/FluidBaseClient.hpp>
 #include <flucoma/clients/common/FluidContext.hpp>
 #include <flucoma/clients/common/ParameterSet.hpp>
