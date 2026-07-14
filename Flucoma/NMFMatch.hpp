@@ -4,6 +4,7 @@
 
 #include <flucoma/clients/rt/NMFMatchClient.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/audio.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -38,7 +39,7 @@ struct NMFMatch
     halp::fixed_audio_bus<"In", double, 1> audio;
 
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Bases", "nmf_bases.wav"> bases;
+    halp::folder_combobox<"Bases", "Folder", "wav", "nmf_bases.wav"> bases;
 
     FluCoMa::fluid_long_max_param<Client, Idx::kMaxRank, max_components,
                                   max_components>

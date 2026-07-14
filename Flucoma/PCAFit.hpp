@@ -15,6 +15,8 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
@@ -42,8 +44,8 @@ struct PCAFit
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
-    halp::lineedit<"Dataset file", "corpus.json"> dataset;
+    halp::folder_port<"Folder"> folder;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus.json"> dataset;
     halp::lineedit<"Model file", "pca.json"> model;
     halp::lineedit<"Output dataset", "corpus_pca.json"> output;
     struct : halp::spinbox_i32<"Components", halp::range{1, 64, 2}>

@@ -11,6 +11,7 @@
 #include <flucoma/algorithms/public/MLP.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -39,7 +40,7 @@ struct MLPRegressorPoint
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Model file", "mlp.json"> model_file;
+    halp::folder_combobox<"Model file", "Folder", "json", "mlp.json"> model_file;
     halp::val_port<"In", std::vector<float>> input;
   } inputs;
 

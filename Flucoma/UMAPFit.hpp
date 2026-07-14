@@ -11,6 +11,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -37,7 +38,7 @@ struct UMAPFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Dataset file", "corpus.json"> dataset;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus.json"> dataset;
     halp::lineedit<"Model file", "umap.json"> model;
     halp::lineedit<"Output dataset", "corpus_umap.json"> output;
     struct : halp::spinbox_i32<"Neighbours", halp::range{2, 128, 15}>

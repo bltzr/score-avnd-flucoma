@@ -15,6 +15,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.enums.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -44,7 +45,7 @@ struct MDSFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Dataset file", "corpus.json"> dataset;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus.json"> dataset;
     halp::lineedit<"Output dataset", "corpus_mds.json"> output;
     struct : halp::spinbox_i32<"Dimensions", halp::range{1, 32, 2}>
     {

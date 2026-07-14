@@ -13,6 +13,8 @@
 #include <flucoma/algorithms/public/RobustScaling.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
@@ -38,8 +40,8 @@ struct RobustScalePoint
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
-    halp::lineedit<"Model file", "robustscale.json"> model_file;
+    halp::folder_port<"Folder"> folder;
+    halp::folder_combobox<"Model file", "Folder", "json", "robustscale.json"> model_file;
     halp::toggle<"Inverse"> inverse;
     halp::val_port<"In", std::vector<float>> in;
   } inputs;

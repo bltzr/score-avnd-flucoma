@@ -18,6 +18,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.enums.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -50,8 +51,8 @@ struct MLPClassifierFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Input dataset", "corpus.json"> source;
-    halp::lineedit<"Labels file", "labels.json"> labels;
+    halp::folder_combobox<"Input dataset", "Folder", "json", "corpus.json"> source;
+    halp::folder_combobox<"Labels file", "Folder", "json", "labels.json"> labels;
     halp::lineedit<"Model file", "mlpclassifier.json"> model;
     // Space-separated hidden layer sizes, e.g. "6 4"
     halp::lineedit<"Hidden layers", "3"> hidden;

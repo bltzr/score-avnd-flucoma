@@ -15,6 +15,7 @@
 #include <flucoma/algorithms/public/Grid.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.enums.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -42,7 +43,7 @@ struct GridFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Dataset file", "corpus_umap.json"> dataset;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus_umap.json"> dataset;
     halp::lineedit<"Output dataset", "corpus_grid.json"> output;
     struct : halp::spinbox_i32<"Oversampling", halp::range{1, 16, 1}>
     {

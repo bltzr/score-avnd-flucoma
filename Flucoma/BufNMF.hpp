@@ -4,6 +4,7 @@
 
 #include <flucoma/clients/nrt/NMFClient.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -38,7 +39,7 @@ struct BufNMF
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Source", "source.wav"> source;
+    halp::folder_combobox<"Source", "Folder", "wav aif aiff flac mp3 m4a ogg", "source.wav"> source;
     halp::lineedit<"Resynth file", "nmf_resynth.wav"> resynthFile;
     halp::lineedit<"Bases file", "nmf_bases.wav"> basesFile;
     halp::lineedit<"Activations file", "nmf_activations.wav"> activationsFile;

@@ -15,6 +15,8 @@
 #include <flucoma/algorithms/public/PCA.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
@@ -43,8 +45,8 @@ struct PCAPoint
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
-    halp::lineedit<"Model file", "pca.json"> model_file;
+    halp::folder_port<"Folder"> folder;
+    halp::folder_combobox<"Model file", "Folder", "json", "pca.json"> model_file;
     struct : halp::spinbox_i32<"Components", halp::range{1, 64, 2}>
     {
     } k;

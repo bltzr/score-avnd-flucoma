@@ -12,6 +12,8 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
@@ -35,8 +37,8 @@ struct NormalizeFit
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
-    halp::lineedit<"Dataset file", "corpus.json"> dataset;
+    halp::folder_port<"Folder"> folder;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus.json"> dataset;
     halp::lineedit<"Model file", "normalize.json"> model;
     halp::lineedit<"Output dataset", "corpus_normalized.json"> output;
     halp::spinbox_f32<"Min", halp::range{-9999., 9999., 0.}> min;

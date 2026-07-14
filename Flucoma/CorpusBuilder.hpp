@@ -14,6 +14,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -41,8 +42,8 @@ struct CorpusBuilder
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Indices file", "indices.wav"> indices;
-    halp::lineedit<"Features file", "mfcc.wav"> features;
+    halp::folder_combobox<"Indices file", "Folder", "wav", "indices.wav"> indices;
+    halp::folder_combobox<"Features file", "Folder", "wav", "mfcc.wav"> features;
     halp::lineedit<"Dataset file", "corpus.json"> dataset;
     halp::toggle<"Process"> process;
   } inputs;

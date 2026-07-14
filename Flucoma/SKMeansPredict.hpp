@@ -13,6 +13,7 @@
 #include <flucoma/algorithms/public/SKMeans.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -43,7 +44,7 @@ struct SKMeansPredict
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Model file", "skmeans.json"> model_file;
+    halp::folder_combobox<"Model file", "Folder", "json", "skmeans.json"> model_file;
     halp::val_port<"In", std::vector<float>> in;
   } inputs;
 

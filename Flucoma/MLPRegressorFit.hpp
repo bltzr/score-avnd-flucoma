@@ -14,6 +14,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.enums.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -46,8 +47,8 @@ struct MLPRegressorFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Input dataset", "in.json"> source;
-    halp::lineedit<"Target dataset", "out.json"> target;
+    halp::folder_combobox<"Input dataset", "Folder", "json", "in.json"> source;
+    halp::folder_combobox<"Target dataset", "Folder", "json", "out.json"> target;
     halp::lineedit<"Model file", "mlp.json"> model;
     // Space-separated hidden layer sizes, e.g. "6 4"
     halp::lineedit<"Hidden layers", "3"> hidden;

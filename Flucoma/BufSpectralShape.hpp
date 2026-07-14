@@ -4,6 +4,7 @@
 
 #include <flucoma/clients/rt/SpectralShapeClient.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -39,7 +40,7 @@ struct BufSpectralShape
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Source", "source.wav"> source;
+    halp::folder_combobox<"Source", "Folder", "wav aif aiff flac mp3 m4a ogg", "source.wav"> source;
     halp::lineedit<"Features file", "spectralshape.wav"> featuresFile;
 
     halp::toggle<"Process"> process;

@@ -13,6 +13,7 @@
 #include <flucoma/data/FluidDataSet.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
 #include <halp/meta.hpp>
@@ -39,7 +40,7 @@ struct SKMeansFit
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Dataset file", "corpus.json"> dataset;
+    halp::folder_combobox<"Dataset file", "Folder", "json", "corpus.json"> dataset;
     halp::lineedit<"Model file", "skmeans.json"> model;
     struct : halp::spinbox_i32<"Clusters", halp::range{1, 256, 4}>
     {

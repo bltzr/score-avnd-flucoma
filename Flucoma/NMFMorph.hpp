@@ -4,6 +4,7 @@
 
 #include <flucoma/clients/rt/NMFMorphClient.hpp>
 
+#include <halp/folder_combobox.hpp>
 #include <halp/audio.hpp>
 #include <halp/controls.hpp>
 #include <halp/file_port.hpp>
@@ -33,8 +34,8 @@ struct NMFMorph
   struct ins
   {
     halp::folder_port<"Folder"> folder;
-    halp::lineedit<"Source bases", "nmf_bases_a.wav"> sourceBases;
-    halp::lineedit<"Target bases", "nmf_bases_b.wav"> targetBases;
+    halp::folder_combobox<"Source bases", "Folder", "wav", "nmf_bases_a.wav"> sourceBases;
+    halp::folder_combobox<"Target bases", "Folder", "wav", "nmf_bases_b.wav"> targetBases;
     halp::lineedit<"Activations", "nmf_activations.wav"> activations;
 
     FluCoMa::fluid_param_for<Client, Idx::kAutoAssign> autoassign;

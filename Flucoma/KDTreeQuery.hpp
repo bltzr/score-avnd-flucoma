@@ -47,8 +47,9 @@ struct KDTreeQuery
   {
     halp::folder_port<"Folder"> folder;
     // Folder-backed pickers: list the folder's .json files, populated at load.
-    halp::folder_combobox<"Tree file", "Folder", "json"> tree;
-    halp::folder_combobox<"Meta file", "Folder", "json"> meta;
+    halp::folder_combobox<"Tree file", "Folder", "json", "kdtree.json"> tree;
+    halp::folder_combobox<"Meta file", "Folder", "json", "corpus.json.meta.json">
+        meta;
     struct : halp::spinbox_i32<"K", halp::range{1, 64, 1}>
     {
     } k;

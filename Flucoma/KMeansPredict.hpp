@@ -13,6 +13,8 @@
 #include <flucoma/algorithms/public/KMeans.hpp>
 #include <flucoma/data/FluidJSON.hpp>
 
+#include <halp/file_port.hpp>
+#include <halp/folder_combobox.hpp>
 #include <halp/controls.hpp>
 #include <halp/meta.hpp>
 
@@ -41,8 +43,8 @@ struct KMeansPredict
 
   struct ins
   {
-    halp::lineedit<"Folder", ""> folder;
-    halp::lineedit<"Model file", "kmeans.json"> model_file;
+    halp::folder_port<"Folder"> folder;
+    halp::folder_combobox<"Model file", "Folder", "json", "kmeans.json"> model_file;
     halp::val_port<"In", std::vector<float>> in;
   } inputs;
 
